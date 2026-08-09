@@ -67,10 +67,10 @@ The actual exploit just patches `sec_get_vfy_policy()` to always return 0, so an
 The injector is built on top of [`liblk`](https://github.com/R0rt1z2/liblk), and this fork is made only for using in termux !
 Install the requirements
 ```bash
+pkg update
+pkg install build-essential clang llvm python git
 git clone https://github.com/snapboss/fenrir-termux fenrir-termux
 cd fenrir-termux
-pkg update
-pkg install build-essential clang llvm python
 pip install -r requirements.txt
 ```
 Place your bootloader image in the `bin/` directory with your device codename (e.g., `bin/pacman.bin`)

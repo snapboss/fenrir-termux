@@ -1,6 +1,6 @@
 # fenrir
 
-**Language:** [日本語](README_ja-JP.md)
+
 
 This is a PoC exploit for a vulnerability in the Nothing Phone (2a) / CMF Phone 1 secure boot chain (and possibly other MediaTek devices).
 
@@ -64,26 +64,31 @@ graph LR
 The actual exploit just patches `sec_get_vfy_policy()` to always return 0, so an unverified `bl2_ext` running at EL3 now happily loads unverified images for the rest of the boot chain.
 
 ## Usage
-The injector is built on top of [`liblk`](https://github.com/R0rt1z2/liblk), install it first:
+The injector is built on top of [`liblk`](https://github.com/R0rt1z2/liblk), and this fork is made only for using in termux !
+Install the requirements
 ```bash
+git clone https://github.com/snapboss/fenrir-termux fenrir-termux
+cd fenrir-termux
+pkg update
+pkg install build-essential clang llvm python
 pip install -r requirements.txt
 ```
-
 Place your bootloader image in the `bin/` directory with your device codename (e.g., `bin/pacman.bin`)
 
+Example for POCO X6 Pro codename DUCHAMP: 
+Go to your rom dump, find `lk.img`, rename it to `duchamp.bin` and copy `duchamp.bin` file to bin/ (e.g. `bin/duchamp.bin`)
 Once you have your bootloader image ready, you can build the exploit using the provided `build.sh` script:
 ```bash
 # Using default bootloader location (bin/[device].bin)
-./build.sh pacman
+chmod +x build.sh
+bash build.sh duchamp
 
 # Using custom bootloader path
-./build.sh pacman /path/to/your/bootloader.bin
+bash build.sh duchamp /path/to/your/bootloader.bin
 ```
 
-After building, you should see a new file named `lk.patched` in the root directory. You can now flash this patched bootloader image to your device:
-```
-./flash.sh
-```
+After building, you should see a new file named `duchamp-fenrir.bin` in the root directory. You can now flash this patched bootloader image using another device or PC in fastboot by using command 
+`fastboot flash lk_ab duchamp-fenrir.bin`
 
 > [!NOTE]
 > If fastboot mode is not available on your device, you might have to use another method to flash the output image. The provided script assumes fastboot mode is available.

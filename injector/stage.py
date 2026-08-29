@@ -8,6 +8,9 @@ from liblk.structures.partition import LkPartition
 from patch_utils import MatchMode, PatternMatcher
 from utils import encode_bl, pad_payload
 
+RED = "\033[91m"
+RESET = "\033[0m"
+
 
 @dataclass
 class InjectionContext:
@@ -153,7 +156,7 @@ class PatchStage(Stage):
             targets: List[Tuple[str, LkPartition]] = []
             for part_name in self.partitions:
                 if part_name not in ctx.image.partitions:
-                    print("Warning: partition '%s' not found for patch '%s'" % (part_name, self.name))
+                    print("%sWarning: partition '%s' not found for patch '%s'%s" % (RED, part_name, self.name, RESET))
                     continue
                 targets.append((part_name, ctx.image.partitions[part_name]))
             if not targets:
@@ -175,7 +178,7 @@ class PatchStage(Stage):
         selected: List[Tuple[str, int]] = self._select_matches(matches)
 
         if not selected:
-            print("Warning: Pattern not found for patch '%s'" % self.name)
+            print("%sWarning: Pattern not found for patch '%s'%s" % (RED, self.name, RESET))
             return
 
         by_partition: Dict[str, List[int]] = {}

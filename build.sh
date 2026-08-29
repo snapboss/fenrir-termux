@@ -53,6 +53,7 @@ echo
 
 if [ -f "${DEVICE_LOWER}-fenrir.bin" ]; then
    echo -e "${GREEN}Operation completed successfully!${NC}"
+   echo -e "${RED}If any of the patches says WARNING do not use the file or you will get bricked!${NC}"
    echo -e "${NC}Patched bootloader saved as: ${BOLD}${DEVICE_LOWER}-fenrir.bin${NC}"
 else
     echo -e "${RED}Injection failed or output file not found!${NC}"
